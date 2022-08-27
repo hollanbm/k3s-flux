@@ -35,4 +35,4 @@ spec:
           
     service:
       spec:
-        loadBalancerIP: 10.254.30.31
+        loadBalancerIP: 10.254.30.32
