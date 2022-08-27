@@ -1,0 +1,24 @@
+additionalArguments:
+  - "--serversTransport.insecureSkipVerify=true"
+  - "--log.level=INFO"
+deployment:
+  labels:
+    app: "traefik"
+  replicas: 2
+ports:
+  web:
+    redirectTo: websecure
+  websecure:
+    tls:
+      enabled: true
+service:
+  labels:
+    app: "traefik"
+  type: LoadBalancer
+  spec:
+    loadBalancerIP: 10.254.30.33
+ingressRoute:
+  dashboard:
+    enabled: false
+    labels:
+      app: "traefik"
