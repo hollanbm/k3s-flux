@@ -23,7 +23,7 @@ spec:
     controller:
       labels:
         app: radarr
-      replicas: 2
+      replicas: 1
     service:
       labels:
         app: radarr
@@ -57,7 +57,7 @@ spec:
         downloads:
           enabled: true
           type: pvc
-          existingClaim: pvc-downloads
+          existingClaim: downloads
           mountPath: /downloads
         movies:
           enabled: true
