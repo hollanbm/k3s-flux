@@ -10,4 +10,5 @@ spec:
     kind: ClusterIssuer
   commonName: "media.k3s.bholland.org"
   dnsNames:
+  - "media.k3s.bholland.org"
   - "*.media.k3s.bholland.org"
