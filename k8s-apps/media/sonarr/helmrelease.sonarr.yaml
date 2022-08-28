@@ -16,6 +16,9 @@ spec:
   timeout: 5m
   releaseName: sonarr
   values:
+    image:
+      repository: ghcr.io/k8s-at-home/sonarr
+      tag: latest
     env:
       TZ: America/Kentucky/Louisville
       PUID: 1000
