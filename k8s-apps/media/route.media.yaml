@@ -50,5 +50,13 @@ spec:
           name: sabnzbd
           namespace: media
           port: 8080
+    - match: Host(`rutorrent.media.k3s.bholland.org`) || (Host(`media.k3s.bholland.org`) && PathPrefix(`/rutorrent/`))
+      kind: Rule
+      services:
+        - kind: Service
+          name: rutorrent
+          namespace: media
+          port: 8080
+
   tls:
     secretName: media-k3s-bholland-org-staging-tls

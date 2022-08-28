@@ -1,0 +1,69 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: rutorrent
+  namespace: media
+spec:
+  chart:
+    spec:
+      chart: rtorrent-rutorrent
+      version: 1.1.x
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home
+        namespace: flux-system
+  interval: 15m
+  timeout: 5m
+  releaseName: rutorrent
+  values:
+    global:
+      labels:
+        app: rutorrent
+    env:
+      TZ: America/Kentucky/Louisville
+      PUID: 1000
+      PGID: 1000
+      RUTORRENT_PORT: 8080
+      RT_INC_PORT: 50505
+    initContainers:
+      remove-session-lock:
+        image: busybox
+        command: ["sh", "-c", "rm -rf /config/.local/share/rtorrent/.session/rtorrent.lock"]
+        volumeMounts:
+        - name: config
+          mountPath: /config
+      update-volume-permissions:
+        image: busybox:1.35.0
+        command: ["/bin/sh", "-c"]
+        args: ["chown -R 1000:1000 /config;"]
+        volumeMounts:
+          - name: config
+            mountPath: /config
+          - name: torrents
+            mountPath: /torrents
+        securityContext:
+          runAsUser: 0
+    podSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+      fsGroupChangePolicy: "OnRootMismatch"
+    persistence:
+        config:
+          enabled: true
+          type: pvc
+          existingClaim: rutorrent-config
+          mountPath: /config
+        torrents:
+          enabled: true
+          type: pvc
+          existingClaim: torrents
+          mountPath: /torrents
+        sassy:
+          enabled: true
+          type: custom
+          volumeSpec:
+            nfs:
+              path: /mnt/SASSY/Downloads
+              server: 10.254.30.11
+          mountPath: /sassy
