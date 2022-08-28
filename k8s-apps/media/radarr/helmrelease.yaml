@@ -52,6 +52,7 @@ spec:
           mountPath: /config
           readOnly: false
           storageClass: longhorn
+          numberOfReplicas: 2
           accessMode: ReadWriteOnce
           size: 10Gi
           retain: true
