@@ -8,7 +8,7 @@ spec:
     - web
     - websecure
   routes:
-    - match: Host(`media.k3s.bholland.org`) && PathPrefix(`/radarr/`)
+    - match: Host(`radarr.media.k3s.bholland.org`) || (Host(`media.k3s.bholland.org`) && PathPrefix(`/radarr/`))
       kind: Rule
       services:
         - kind: Service
