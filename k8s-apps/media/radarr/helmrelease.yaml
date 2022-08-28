@@ -48,15 +48,9 @@ spec:
     persistence:
         config:
           enabled: true
-          name: radarr-config
           type: pvc
+          existingClaim: radarr-config
           mountPath: /config
-          readOnly: false
-          storageClass: longhorn
-          numberOfReplicas: 2
-          accessMode: ReadWriteOnce
-          size: 10Gi
-          retain: true
         downloads:
           enabled: true
           type: pvc
