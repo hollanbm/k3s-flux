@@ -15,6 +15,5 @@ spec:
           name: radarr
           namespace: media
           port: 7878
-          
   tls:
     secretName: media-k3s-bholland-org-staging-tls
