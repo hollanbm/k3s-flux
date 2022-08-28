@@ -1,0 +1,69 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: radarr
+  namespace: home
+spec:
+  chart:
+    spec:
+      chart: radarr
+      version: 16.2.x
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home
+        namespace: flux-system
+  interval: 15m
+  timeout: 5m
+  releaseName: radarr
+  values:
+    image:
+      repository: ghcr.io/k8s-at-home/radarr-nightly
+    env:
+      TZ: America/Kentucky/Louisville
+    controller:
+      labels:
+        app: radarr
+      replicas: 2
+    service:
+      labels:
+        app: radarr
+    initContainers:
+      update-volume-permissions:
+        image: busybox:1.35.0
+        command: ["/bin/sh", "-c"]
+        args: ["chown -R 1000:1000 /config; chown -R 1000:1000 /downloads"]
+        volumeMounts:
+          - name: config
+            mountPath: /config
+          - name: downloads
+            mountPath: /downloads
+        securityContext:
+          runAsUser: 0
+    podSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+      fsGroupChangePolicy: "OnRootMismatch"
+    persistence:
+        config:
+          enabled: true
+          type: pvc
+          mountPath: /config
+          readOnly: false
+          storageClass: longhorn
+          accessMode: ReadWriteOnce
+          size: 10Gi
+          retain: true
+        downloads:
+          enabled: true
+          type: pvc
+          existingClaim: pvc-downloads
+          mountPath: /downloads
+        movies:
+          enabled: true
+          type: custom
+          volumeSpec:
+            nfs:
+              path: /mnt/Main/Media/Movies
+              server: 10.254.30.11
+          mountPath: /movies
