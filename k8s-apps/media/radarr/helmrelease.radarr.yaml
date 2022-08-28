@@ -55,15 +55,15 @@ spec:
           type: pvc
           existingClaim: radarr-config
           mountPath: /config
-        downloads-usenet:
+        usenet:
           enabled: true
           type: pvc
-          existingClaim: downloads-usenet
+          existingClaim: usenet
           mountPath: /usenet
-        downloads-torrents:
+        torrents:
           enabled: true
           type: pvc
-          existingClaim: downloads-torrents
+          existingClaim: torrents
           mountPath: /torrents
         movies:
           enabled: true
