@@ -22,5 +22,12 @@ spec:
           name: sonarr
           namespace: media
           port: 8989
+    - match: Host(`prowlarr.media.k3s.bholland.org`) || (Host(`media.k3s.bholland.org`) && PathPrefix(`/prowlarr/`))
+      kind: Rule
+      services:
+        - kind: Service
+          name: prowlarr
+          namespace: media
+          port: 9696
   tls:
     secretName: media-k3s-bholland-org-staging-tls
