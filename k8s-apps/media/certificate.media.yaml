@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: media-k3s-bholland-org-staging
+  namespace: media
+spec:
+  secretName: media-k3s-bholland-org-staging-tls
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: "media.k3s.bholland.org"
+  dnsNames:
+  - "*.media.k3s.bholland.org"
