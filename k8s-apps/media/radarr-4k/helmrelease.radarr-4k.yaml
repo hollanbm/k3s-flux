@@ -1,0 +1,72 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: radarr
+  namespace: media
+spec:
+  chart:
+    spec:
+      chart: radarr
+      version: 16.3.x
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home
+        namespace: flux-system
+  interval: 15m
+  timeout: 5m
+  releaseName: radarr-4k
+  values:
+    global:
+      nameOverride: 4k
+      labels:
+        app: radarr-4k
+    image:
+      repository: ghcr.io/k8s-at-home/radarr
+      tag: latest
+    env:
+      TZ: America/Kentucky/Louisville
+      PUID: 1000
+      PGID: 1000
+    initContainers:
+      update-volume-permissions:
+        image: busybox:1.35.0
+        command: ["/bin/sh", "-c"]
+        args: ["chown -R 1000:1000 /config; chown -R 1000:1000 /torrents; chown -R 1000:1000 /usenet"]
+        volumeMounts:
+          - name: config
+            mountPath: /config
+          - name: torrents
+            mountPath: /torrents
+          - name: usenet
+            mountPath: /usenet
+        securityContext:
+          runAsUser: 0
+    podSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+      fsGroupChangePolicy: "OnRootMismatch"
+    persistence:
+        config:
+          enabled: true
+          type: pvc
+          existingClaim: radarr-4k-config
+          mountPath: /config
+        usenet:
+          enabled: true
+          type: pvc
+          existingClaim: usenet
+          mountPath: /usenet
+        torrents:
+          enabled: true
+          type: pvc
+          existingClaim: torrents
+          mountPath: /torrents
+        movies-4k:
+          enabled: true
+          type: custom
+          volumeSpec:
+            nfs:
+              path: /mnt/SASSY/Media/Movies-4k
+              server: 10.254.30.11
+          mountPath: /movies-4k

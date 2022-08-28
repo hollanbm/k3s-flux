@@ -15,6 +15,13 @@ spec:
           name: radarr
           namespace: media
           port: 7878
+    - match: Host(`radarr-4k.media.k3s.bholland.org`) || (Host(`media.k3s.bholland.org`) && PathPrefix(`/radarr-4k/`))
+      kind: Rule
+      services:
+        - kind: Service
+          name: radarr-4k
+          namespace: media
+          port: 7878
     - match: Host(`sonarr.media.k3s.bholland.org`) || (Host(`media.k3s.bholland.org`) && PathPrefix(`/sonarr/`))
       kind: Rule
       services:
