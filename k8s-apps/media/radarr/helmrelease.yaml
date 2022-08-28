@@ -58,6 +58,7 @@ spec:
           retain: true
         downloads:
           enabled: true
+          name: radarr-config
           type: pvc
           existingClaim: downloads
           mountPath: /downloads
