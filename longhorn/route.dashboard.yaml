@@ -1,0 +1,20 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: longhorn-dashboard
+  namespace: longhorn
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`longhorn.k3s.bholland.org`)
+      kind: Rule
+      services:
+        - kind: Service
+          name: longhorn-frontend
+          namespace: longhorn
+          port: 80
+          
+  tls:
+    secretName: longhorn-k3s-bholland-org-staging-tls
