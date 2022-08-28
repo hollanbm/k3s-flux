@@ -43,5 +43,12 @@ spec:
           name: prowlarr
           namespace: media
           port: 9696
+    - match: Host(`sabnzbd.media.k3s.bholland.org`) || (Host(`media.k3s.bholland.org`) && PathPrefix(`/sabnzbd/`))
+      kind: Rule
+      services:
+        - kind: Service
+          name: sabnzbd
+          namespace: media
+          port: 8080
   tls:
     secretName: media-k3s-bholland-org-staging-tls
