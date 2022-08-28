@@ -48,6 +48,7 @@ spec:
     persistence:
         config:
           enabled: true
+          name: radarr-config
           type: pvc
           mountPath: /config
           readOnly: false
@@ -58,7 +59,6 @@ spec:
           retain: true
         downloads:
           enabled: true
-          name: radarr-config
           type: pvc
           existingClaim: downloads
           mountPath: /downloads
