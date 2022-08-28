@@ -1,0 +1,20 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: longhorn-dashboard
+  namespace: longhorn
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`media.k3s.bholland.org`) && PathPrefix(`/radarr/`)
+      kind: Rule
+      services:
+        - kind: Service
+          name: radarr
+          namespace: media
+          port: 7878
+          
+  tls:
+    secretName: media-k3s-bholland-org-staging-tls
