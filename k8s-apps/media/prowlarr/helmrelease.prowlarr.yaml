@@ -1,0 +1,53 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: prowlarr
+  namespace: media
+spec:
+  chart:
+    spec:
+      chart: prowlarr
+      version: 4.5.x
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home
+        namespace: flux-system
+  interval: 15m
+  timeout: 5m
+  releaseName: prowlarr
+  values:
+    image:
+      repository: ghcr.io/k8s-at-home/prowlarr
+      tag: latest
+    env:
+      TZ: America/Kentucky/Louisville
+      PUID: 1000
+      PGID: 1000
+    controller:
+      labels:
+        app: prowlarr
+      replicas: 1
+    service:
+      labels:
+        app: prowlarr
+    initContainers:
+      update-volume-permissions:
+        image: busybox:1.35.0
+        command: ["/bin/sh", "-c"]
+        args: ["chown -R 1000:1000 /config"]
+        volumeMounts:
+          - name: config
+            mountPath: /config
+        securityContext:
+          runAsUser: 0
+    podSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+      fsGroupChangePolicy: "OnRootMismatch"
+    persistence:
+        config:
+          enabled: true
+          type: pvc
+          existingClaim: prowlarr-config
+          mountPath: /config
