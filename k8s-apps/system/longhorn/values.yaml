@@ -1,1 +1,2 @@
+fluxcd.io/ignore: "true"
 # helm install longhorn longhorn/longhorn --namespace longhorn
