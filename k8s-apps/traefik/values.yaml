@@ -22,3 +22,5 @@ ingressRoute:
     enabled: false
     labels:
       app: "traefik"
+
+# helm install --namespace=traefik traefik traefik/traefik --values=values.yaml

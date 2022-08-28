@@ -1,0 +1,40 @@
+all:
+  children:
+    k3s:
+      hosts:
+        10.254.30.[2:6]: 
+    nextcloud:
+      hosts:
+        10.254.1.44: #nextcloud
+    plex:
+      hosts:
+        10.254.1.55: #plex
+    swag:
+      hosts:
+        10.254.1.66: #swag
+    tdarr:
+      hosts:
+        10.254.1.77: #tdarr
+        10.254.1.79: #tdarr-r730xd
+        10.254.1.78: #tdarr-r720xd
+    graylog:
+      hosts:
+        10.254.1.88: #graylog
+    truecommand:
+      hosts:
+        10.254.1.97: #truecommand
+    mediamanager:
+      hosts:
+        10.254.1.100: #mediamanager
+    vms:
+      children:
+        nextcloud:
+        plex:
+        swag:
+        tdarr:
+        graylog:
+        truecommand:
+        mediamanager:
+
+
+
