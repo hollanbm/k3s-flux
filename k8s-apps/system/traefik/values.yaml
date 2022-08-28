@@ -1,5 +1,3 @@
-fluxcd.io/ignore: "true"
-
 additionalArguments:
   - "--serversTransport.insecureSkipVerify=true"
   - "--log.level=INFO"
