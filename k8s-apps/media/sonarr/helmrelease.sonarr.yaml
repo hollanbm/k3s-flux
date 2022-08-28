@@ -1,12 +1,12 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: radarr
-  namespace: media
+  name: sonarr
+  namespace: home
 spec:
   chart:
     spec:
-      chart: radarr
+      chart: sonarr
       version: 16.3.x
       sourceRef:
         kind: HelmRepository
@@ -14,30 +14,31 @@ spec:
         namespace: flux-system
   interval: 15m
   timeout: 5m
-  releaseName: radarr
+  releaseName: sonarr
   values:
-    image:
-      repository: ghcr.io/k8s-at-home/radarr-nightly
-      tag: latest
     env:
       TZ: America/Kentucky/Louisville
+      PUID: 1000
+      PGID: 1000
     controller:
       labels:
-        app: radarr
+        app: sonarr
       replicas: 1
     service:
       labels:
-        app: radarr
+        app: sonarr
     initContainers:
       update-volume-permissions:
         image: busybox:1.35.0
         command: ["/bin/sh", "-c"]
-        args: ["chown -R 1000:1000 /config; chown -R 1000:1000 /downloads"]
+        args: ["chown -R 1000:1000 /config; chown -R 1000:1000 /torrents; chown -R 1000:1000 /usenet"]
         volumeMounts:
           - name: config
             mountPath: /config
-          - name: downloads
-            mountPath: /downloads
+          - name: torrents
+            mountPath: /torrents
+          - name: usenet
+            mountPath: /usenet
         securityContext:
           runAsUser: 0
     podSecurityContext:
@@ -49,18 +50,23 @@ spec:
         config:
           enabled: true
           type: pvc
-          existingClaim: radarr-config
+          existingClaim: sonarr-config
           mountPath: /config
-        downloads:
+        downloads-usenet:
           enabled: true
           type: pvc
-          existingClaim: downloads
-          mountPath: /downloads
-        movies:
+          existingClaim: downloads-usenet
+          mountPath: /usenet
+        downloads-torrents:
+          enabled: true
+          type: pvc
+          existingClaim: downloads-torrents
+          mountPath: /torrents
+        tv:
           enabled: true
           type: custom
           volumeSpec:
             nfs:
-              path: /mnt/Main/Media/Movies
+              path: /mnt/Main/Media/TV
               server: 10.254.30.11
-          mountPath: /movies
+          mountPath: /tv

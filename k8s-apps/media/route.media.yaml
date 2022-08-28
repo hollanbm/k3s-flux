@@ -15,5 +15,12 @@ spec:
           name: radarr
           namespace: media
           port: 7878
+    - match: Host(`sonarr.media.k3s.bholland.org`) || (Host(`media.k3s.bholland.org`) && PathPrefix(`/sonarr/`))
+      kind: Rule
+      services:
+        - kind: Service
+          name: sonarr
+          namespace: media
+          port: 8989
   tls:
     secretName: media-k3s-bholland-org-staging-tls
