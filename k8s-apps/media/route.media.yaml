@@ -50,11 +50,11 @@ spec:
           name: sabnzbd
           namespace: media
           port: 8080
-    - match: Host(`rutorrent.media.k3s.bholland.org`) || (Host(`media.k3s.bholland.org`) && PathPrefix(`/rutorrent/`))
+    - match: Host(`qbt.media.k3s.bholland.org`) || (Host(`media.k3s.bholland.org`) && PathPrefix(`/qbt/`))
       kind: Rule
       services:
         - kind: Service
-          name: rutorrent
+          name: qbt
           namespace: media
           port: 8080
 
