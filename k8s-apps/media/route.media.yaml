@@ -22,6 +22,13 @@ spec:
           name: sonarr
           namespace: media
           port: 8989
+    - match: Host(`sonarr-anime.media.k3s.bholland.org`) || (Host(`media.k3s.bholland.org`) && PathPrefix(`/sonarr-anime/`))
+      kind: Rule
+      services:
+        - kind: Service
+          name: sonarr-anime
+          namespace: media
+          port: 8989
     - match: Host(`prowlarr.media.k3s.bholland.org`) || (Host(`media.k3s.bholland.org`) && PathPrefix(`/prowlarr/`))
       kind: Rule
       services:
