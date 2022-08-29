@@ -30,8 +30,16 @@ spec:
       websecure:
         tls:
           enabled: true
-      bt:
-        address: ":50505"
+      bt-tcp:
+        port: 50505
+        expose: true
+        exposedPort: 50505
+        protocol: TCP
+      bt-udp:
+        port: 50505
+        expose: true
+        exposedPort: 50505
+        protocol: UDP
     service:
       labels:
         app: "traefik"
