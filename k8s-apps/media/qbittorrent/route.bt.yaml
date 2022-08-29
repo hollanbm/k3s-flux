@@ -1,0 +1,14 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: media
+  namespace: media
+spec:
+  entryPoints:
+    - bt
+  routes:
+    - match: Host(`qbt.media.k3s.bholland.org`) || (Host(`media.k3s.bholland.org`) && PathPrefix(`/qbt/`))
+      kind: Rule
+      services:
+        - name: qbt
+          kind: Service
