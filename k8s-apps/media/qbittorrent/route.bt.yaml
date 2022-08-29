@@ -5,7 +5,7 @@ metadata:
   namespace: media
 spec:
   entryPoints:
-    - bt
+    - qbt
   routes:
     - match: Host(`qbt.media.k3s.bholland.org`) || (Host(`media.k3s.bholland.org`) && PathPrefix(`/qbt/`))
       kind: Rule
