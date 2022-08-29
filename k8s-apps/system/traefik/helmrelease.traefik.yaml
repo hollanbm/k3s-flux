@@ -30,12 +30,12 @@ spec:
       websecure:
         tls:
           enabled: true
-      bt_tcp:
+      bt-tcp:
         port: 50505
         expose: true
         exposedPort: 50505
         protocol: TCP
-      bt_udp:
+      bt-udp:
         port: 50505
         expose: true
         exposedPort: 50505
