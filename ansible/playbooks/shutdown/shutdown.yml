@@ -1,5 +1,0 @@
-- hosts: "*"
-  become: yes
-  tasks:
-    - name: shutdown a machine
-      community.general.shutdown:
